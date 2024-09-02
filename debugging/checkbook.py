@@ -1,26 +1,24 @@
 #!/usr/bin/python3
 
-import sys
-
 class Checkbook:
     """
-    La classe Checkbook simule un compte bancaire avec des opérations de dépôt, de retrait et de consultation du solde.
+    The Checkbook class simulates a bank account with deposit, withdrawal, and balance checking operations.
     """
     def __init__(self):
         """
-        Initialise un nouvel objet Checkbook avec un solde initial de 0.0.
+        Initializes a new Checkbook object with an initial balance of 0.0.
         """
         self.balance = 0.0
 
     def deposit(self, amount):
         """
-        Ajoute un montant spécifié au solde du compte et affiche les détails de la transaction.
+        Adds a specified amount to the account balance and prints the transaction details.
 
         Args:
-            amount (float): Le montant à déposer dans le compte.
+            amount (float): The amount to deposit into the account.
 
         Returns:
-            None. Affiche le montant déposé et le solde actuel.
+            None. Prints the deposited amount and the current balance.
         """
         self.balance += amount
         print("Deposited ${:.2f}".format(amount))
@@ -28,13 +26,14 @@ class Checkbook:
 
     def withdraw(self, amount):
         """
-        Retire un montant spécifié du solde du compte si le solde est suffisant; sinon, affiche un message d'insuffisance de fonds.
+        Withdraws a specified amount from the account balance if sufficient funds are available;
+        otherwise, prints an insufficient funds message.
 
         Args:
-            amount (float): Le montant à retirer du compte.
+            amount (float): The amount to withdraw from the account.
 
         Returns:
-            None. Affiche le montant retiré et le solde actuel, ou un message d'erreur si les fonds sont insuffisants.
+            None. Prints the withdrawn amount and the current balance, or an error message if funds are insufficient.
         """
         if amount > self.balance:
             print("Insufficient funds to complete the withdrawal.")
@@ -45,38 +44,50 @@ class Checkbook:
 
     def get_balance(self):
         """
-        Affiche le solde actuel du compte.
+        Prints the current account balance.
 
         Args:
             None.
 
         Returns:
-            None. Affiche le solde actuel du compte.
+            None. Prints the current balance of the account.
         """
         print("Current Balance: ${:.2f}".format(self.balance))
 
 def main():
     """
-    Fonction principale qui permet à l'utilisateur d'interagir avec le compte bancaire via des commandes en ligne de commande.
+    The main function allows the user to interact with the bank account via command-line input.
     """
     cb = Checkbook()
     while True:
-        action = input("What would you like to do? (deposit, withdraw, balance, exit): ")
-        if action.lower() == 'exit':
+        action = input("What would you like to do? (deposit, withdraw, balance, exit): ").strip().lower()
+        if action == 'exit':
             break
-        elif action.lower() == 'deposit':
-            amount = float(input("Enter the amount to deposit: $"))
-            cb.deposit(amount)
-        elif action.lower() == 'withdraw':
-            amount = float(input("Enter the amount to withdraw: $"))
-            cb.withdraw(amount)
-        elif action.lower() == 'balance':
+        elif action == 'deposit':
+            try:
+                amount = float(input("Enter the amount to deposit: $"))
+                if amount < 0:
+                    print("Deposit amount must be positive.")
+                else:
+                    cb.deposit(amount)
+            except ValueError:
+                print("Invalid amount. Please enter a valid number.")
+        elif action == 'withdraw':
+            try:
+                amount = float(input("Enter the amount to withdraw: $"))
+                if amount < 0:
+                    print("Withdrawal amount must be positive.")
+                else:
+                    cb.withdraw(amount)
+            except ValueError:
+                print("Invalid amount. Please enter a valid number.")
+        elif action == 'balance':
             cb.get_balance()
         else:
             print("Invalid command. Please try again.")
 
 if __name__ == "__main__":
     """
-    Vérifie si le script est exécuté directement (et non importé comme module) et appelle la fonction main() pour démarrer l'application.
+    Checks if the script is run directly (not imported as a module) and calls the main function to start the application.
     """
     main()
