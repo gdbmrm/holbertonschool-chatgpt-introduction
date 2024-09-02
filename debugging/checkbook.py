@@ -1,93 +1,115 @@
 #!/usr/bin/python3
+"""
+Checkbook Simulation
+
+Ce script permet de simuler un registre de chèques simple où vous pouvez déposer de l'argent, retirer de l'argent et consulter votre solde actuel.
+"""
 
 class Checkbook:
     """
-    The Checkbook class simulates a bank account with deposit, withdrawal, and balance checking operations.
+    Une classe pour représenter un registre de chèques.
+
+    Attributs :
+    ----------
+    balance : float
+        Le solde actuel du registre.
+
+    Méthodes :
+    ---------
+    deposit(amount):
+        Ajoute un montant au solde actuel.
+    
+    withdraw(amount):
+        Soustrait un montant du solde actuel s'il y a suffisamment de fonds.
+    
+    get_balance():
+        Affiche le solde actuel.
     """
+
     def __init__(self):
         """
-        Initializes a new Checkbook object with an initial balance of 0.0.
+        Initialise un nouveau registre de chèques avec un solde de 0.0.
         """
         self.balance = 0.0
 
     def deposit(self, amount):
         """
-        Adds a specified amount to the account balance and prints the transaction details.
+        Ajoute un montant au solde actuel.
 
-        Args:
-            amount (float): The amount to deposit into the account.
+        Paramètres :
+        -----------
+        amount : float
+            Le montant à déposer.
 
-        Returns:
-            None. Prints the deposited amount and the current balance.
+        Retour :
+        -------
+        None
         """
+        if amount <= 0:
+            print("Veuillez entrer un montant positif à déposer.")
+            return
         self.balance += amount
-        print("Deposited ${:.2f}".format(amount))
-        print("Current Balance: ${:.2f}".format(self.balance))
+        print("Déposé : ${:.2f}".format(amount))
+        print("Solde actuel : ${:.2f}".format(self.balance))
 
     def withdraw(self, amount):
         """
-        Withdraws a specified amount from the account balance if sufficient funds are available;
-        otherwise, prints an insufficient funds message.
+        Soustrait un montant du solde actuel s'il y a suffisamment de fonds.
 
-        Args:
-            amount (float): The amount to withdraw from the account.
+        Paramètres :
+        -----------
+        amount : float
+            Le montant à retirer.
 
-        Returns:
-            None. Prints the withdrawn amount and the current balance, or an error message if funds are insufficient.
+        Retour :
+        -------
+        None
         """
+        if amount <= 0:
+            print("Veuillez entrer un montant positif à retirer.")
+            return
         if amount > self.balance:
-            print("Insufficient funds to complete the withdrawal.")
+            print("Fonds insuffisants pour effectuer le retrait.")
         else:
             self.balance -= amount
-            print("Withdrew ${:.2f}".format(amount))
-            print("Current Balance: ${:.2f}".format(self.balance))
+            print("Retiré : ${:.2f}".format(amount))
+            print("Solde actuel : ${:.2f}".format(self.balance))
 
     def get_balance(self):
         """
-        Prints the current account balance.
+        Affiche le solde actuel.
 
-        Args:
-            None.
-
-        Returns:
-            None. Prints the current balance of the account.
+        Retour :
+        -------
+        None
         """
-        print("Current Balance: ${:.2f}".format(self.balance))
+        print("Solde actuel : ${:.2f}".format(self.balance))
 
 def main():
     """
-    The main function allows the user to interact with the bank account via command-line input.
+    Point d'entrée principal pour l'exécution du script.
+
+    Permet à l'utilisateur de choisir entre déposer de l'argent, retirer de l'argent, consulter le solde ou quitter l'application.
+
+    Retour :
+    -------
+    None
     """
     cb = Checkbook()
     while True:
-        action = input("What would you like to do? (deposit, withdraw, balance, exit): ").strip().lower()
-        if action == 'exit':
+        action = input("Que souhaitez-vous faire ? (deposit, withdraw, balance, exit) : ")
+        if action.lower() == 'exit':
             break
-        elif action == 'deposit':
-            try:
-                amount = float(input("Enter the amount to deposit: $"))
-                if amount < 0:
-                    print("Deposit amount must be positive.")
-                else:
-                    cb.deposit(amount)
-            except ValueError:
-                print("Invalid amount. Please enter a valid number.")
-        elif action == 'withdraw':
-            try:
-                amount = float(input("Enter the amount to withdraw: $"))
-                if amount < 0:
-                    print("Withdrawal amount must be positive.")
-                else:
-                    cb.withdraw(amount)
-            except ValueError:
-                print("Invalid amount. Please enter a valid number.")
-        elif action == 'balance':
+        elif action.lower() == 'deposit':
+            amount = float(input("Entrez le montant à déposer : $"))
+            cb.deposit(amount)
+        elif action.lower() == 'withdraw':
+            amount = float(input("Entrez le montant à retirer : $"))
+            cb.withdraw(amount)
+        elif action.lower() == 'balance':
             cb.get_balance()
         else:
-            print("Invalid command. Please try again.")
+            print("Commande invalide. Veuillez réessayer.")
 
 if __name__ == "__main__":
-    """
-    Checks if the script is run directly (not imported as a module) and calls the main function to start the application.
-    """
     main()
